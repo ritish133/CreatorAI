@@ -40,25 +40,8 @@ function CreateNewContent(props:PROPS) {
      * @param formData 
      * @returns 
      */
-    // const GenerateAIContent=async(formData:any)=>{
-    //     if(totalUsage>=10000&&!userSubscription)
-    //         {
-    //             console.log("Please Upgrade");
-    //             router.push('/dashboard/billing')
-    //             return ;
-    //         }
-    //     setLoading(true);
-    //     const SelectedPrompt=selectedTemplate?.aiPrompt;
-    //     const FinalAIPrompt=JSON.stringify(formData)+", "+SelectedPrompt;
-    //     const result=await chatSession.sendMessage(FinalAIPrompt);
-        
-    //     setAiOutput(result?.response.text());
-    //     await SaveInDb(JSON.stringify(formData),selectedTemplate?.slug,result?.response.text())
-    //     setLoading(false);
-        
-    //     setUpdateCreditUsage(Date.now())
 
-    // }
+
     const stripHtmlTags = (html: string): string => {
         // Create a temporary DOM element and set its innerHTML
         const tempDiv = document.createElement('div');
