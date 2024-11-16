@@ -247,7 +247,7 @@ export default  [
     },
     {
         name: 'Write Code',
-        desc: 'AI Model to generate programming code in any language',
+        desc: 'AI Model to generate programming code in any language (By default in C++)',
         icon:'https://cdn-icons-png.flaticon.com/128/6062/6062646.png',
         category: 'Coding',
        
