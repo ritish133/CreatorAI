@@ -1,3 +1,4 @@
+
 "use client"
 import React, { useContext, useState } from 'react'
 import FormSection from '../_components/FormSection'
@@ -24,32 +25,29 @@ interface PROPS{
     }
 }
 
+function CreateNewContent(props: PROPS) {
+    const selectedTemplate: TEMPLATE | undefined = Templates?.find((item) => item.slug == props.params['template-slug']);
+    const [loading, setLoading] = useState(false);
+    const [aiOutput, setAiOutput] = useState<string>('');
+    const { user } = useUser();
+    const router = useRouter();
+    const { totalUsage, setTotalUsage } = useContext(TotalUsageContext);
+    const { userSubscription, setUserSubscription } = useContext(UserSubscriptionContext);
+    const { updateCreditUsage, setUpdateCreditUsage } = useContext(UpdateCreditUsageContext);
 
-function CreateNewContent(props:PROPS) {
-   
-    const selectedTemplate:TEMPLATE|undefined=Templates?.find((item)=>item.slug==props.params['template-slug']);
-    const [loading,setLoading]=useState(false);
-    const [aiOutput,setAiOutput]=useState<string>('');
-    const {user}=useUser();
-    const router=useRouter();
-    const {totalUsage,setTotalUsage}=useContext(TotalUsageContext)
-    const {userSubscription,setUserSubscription}=useContext(UserSubscriptionContext);
-    const {updateCreditUsage,setUpdateCreditUsage}=useContext(UpdateCreditUsageContext)
-    /**
-     * Used to generate content from AI
-     * @param formData 
-     * @returns 
-     */
+    // Function to remove RTF tags (formatted content) and get plain text code
+    const cleanRtfOutput = (rtf: string): string => {
+        // Regular expression to remove all RTF tags (and any extra formatting)
+        const rtfStripper = /\\[a-z]+\d*|{\*?[^{}]*}|\\[^a-z]|[{}]/g;
+        let cleanText = rtf.replace(rtfStripper, '').trim();
 
+        // Optionally, you can also strip excess line breaks or spaces if needed
+        cleanText = cleanText.replace(/\n+/g, '\n').trim();
 
-    const stripHtmlTags = (html: string): string => {
-        // Create a temporary DOM element and set its innerHTML
-        const tempDiv = document.createElement('div');
-        tempDiv.innerHTML = html;
-        // Retrieve the text content from the DOM element
-        return tempDiv.textContent || tempDiv.innerText || '';
+        return cleanText;
     };
-    
+
+    // Function to generate AI content
     const GenerateAIContent = async (formData: any) => {
         if (totalUsage >= 10000 && !userSubscription) {
             console.log("Please Upgrade");
@@ -60,49 +58,53 @@ function CreateNewContent(props:PROPS) {
         const SelectedPrompt = selectedTemplate?.aiPrompt;
         const FinalAIPrompt = JSON.stringify(formData) + ", " + SelectedPrompt;
         const result = await chatSession.sendMessage(FinalAIPrompt);
-    
-        const rawOutput = result?.response.text(); // AI-generated output with HTML
-        const cleanOutput = stripHtmlTags(rawOutput); // Remove HTML tags
-    
+
+        let rawOutput = result?.response.text(); // AI-generated output (could be RTF)
+        let cleanOutput = '';
+
+        if (rawOutput) {
+            // Clean RTF output and retain only the plain text or code
+            cleanOutput = cleanRtfOutput(rawOutput);
+        }
+
         setAiOutput(cleanOutput); // Set the cleaned output
         await SaveInDb(JSON.stringify(formData), selectedTemplate?.slug, cleanOutput);
         setLoading(false);
-    
+
         setUpdateCreditUsage(Date.now());
     };
-    
 
-    const SaveInDb=async(formData:any,slug:any,aiResp:string)=>{
-        const result=await db.insert(AIOutput).values({
-            formData:formData,
-            templateSlug:slug,
-            aiResponse:aiResp,
-            createdBy:user?.primaryEmailAddress?.emailAddress,
-            createdAt:moment().format('DD/MM/yyyy'),
+    // Function to save data in the database
+    const SaveInDb = async (formData: any, slug: any, aiResp: string) => {
+        const result = await db.insert(AIOutput).values({
+            formData: formData,
+            templateSlug: slug,
+            aiResponse: aiResp,
+            createdBy: user?.primaryEmailAddress?.emailAddress,
+            createdAt: moment().format('DD/MM/yyyy'),
         });
 
         console.log(result);
-    }
-    
+    };
 
-  return (
-    <div className='p-5'>
-        <Link href={"/dashboard"}>
-            <Button> <ArrowLeft/> Back</Button>
-        </Link>
-        <div className='grid grid-cols-1 md:grid-cols-3 gap-5 py-5 '>
-            {/* FormSection  */}
-                <FormSection 
-                selectedTemplate={selectedTemplate}
-                userFormInput={(v:any)=>GenerateAIContent(v)}
-                loading={loading} />
-            {/* OutputSection  */}
-            <div className='col-span-2'>
-                <OutputSection aiOutput={aiOutput} />
+    return (
+        <div className='p-5'>
+            <Link href={"/dashboard"}>
+                <Button> <ArrowLeft /> Back</Button>
+            </Link>
+            <div className='grid grid-cols-1 md:grid-cols-3 gap-5 py-5 '>
+                {/* FormSection */}
+                <FormSection
+                    selectedTemplate={selectedTemplate}
+                    userFormInput={(v: any) => GenerateAIContent(v)}
+                    loading={loading} />
+                {/* OutputSection */}
+                <div className='col-span-2'>
+                    <OutputSection aiOutput={aiOutput} />
                 </div>
+            </div>
         </div>
-    </div>
-  )
+    );
 }
 
-export default CreateNewContent
+export default CreateNewContent;
