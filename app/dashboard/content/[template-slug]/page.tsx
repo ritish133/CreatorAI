@@ -49,7 +49,7 @@ function CreateNewContent(props: PROPS) {
 
     // Function to generate AI content
     const GenerateAIContent = async (formData: any) => {
-        if (totalUsage >= 10000 && !userSubscription) {
+        if (totalUsage >= 1000000000 && !userSubscription) {
             console.log("Please Upgrade");
             router.push('/dashboard/billing');
             return;
