@@ -18,6 +18,7 @@
 // }
 
 // export default TemplateCard
+
 import React from "react";
 import { TEMPLATE } from "./TemplateListSection";
 import Image from "next/image";

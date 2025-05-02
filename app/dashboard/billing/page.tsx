@@ -50,7 +50,7 @@ function billing() {
     const options={
       "key":process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
       "subscription_id":subId,
-      "name":'Tubeguruji AI Apps',
+      "name":'Creator AI',
       description:'Monthly Subscription',
       handler:async(resp:any)=>{
         console.log(resp);
@@ -174,7 +174,7 @@ function billing() {
         </li>
       </ul>
 
-      {/* <a
+      <a
         href="#"
         className="mt-8 block rounded-full 
         border border-indigo-600 
@@ -182,7 +182,7 @@ function billing() {
           hover:ring-1 hover:ring-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
       >
         Currently Active Plan
-      </a> */}
+      </a>
     </div>
     <div className="rounded-2xl bg-white border border-gray-200 p-6 shadow-sm sm:px-8 lg:p-12">
       <div className="text-center">
@@ -241,7 +241,7 @@ function billing() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
           </svg>
 
-          <span className="text-gray-700"> Unlimated Download & Copy  </span>
+          <span className="text-gray-700"> Unlimited Download & Copy  </span>
         </li>
 
         <li className="flex items-center gap-1">
