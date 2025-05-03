@@ -20,9 +20,9 @@ function SideNav() {
             path:'/dashboard/history'
         },
         {
-            name:'Billing',
+            name:'Support Us',
             icon:WalletCards,
-            path:'/dashboard/billing'
+            path:'/dashboard/supportus'
         },
         {
             name:'Setting',
