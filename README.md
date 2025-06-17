@@ -10,6 +10,7 @@ CreatorAI is a versatile AI-powered platform for generating a wide variety of co
 - **Authentication:** Secure user authentication and account management with Clerk.
 - **Payments:** Stripe integration for managing subscriptions and unlocking premium features.
 - **Modern UI:** Responsive and attractive interface built with Next.js and Tailwind CSS.
+- **Database:** Built on Neon with Drizzle ORM for scalable, reliable data storage.
 
 ## Tech Stack
 
@@ -18,6 +19,8 @@ CreatorAI is a versatile AI-powered platform for generating a wide variety of co
 - **Authentication:** Clerk
 - **Payments:** Stripe
 - **AI Integration:** Gemini AI
+- **Database:** Neon
+- **ORM:** Drizzle ORM
 
 ## Getting Started
 
@@ -39,7 +42,7 @@ yarn install
 ### Configuration
 
 1. Create a `.env.local` file in the root directory.
-2. Add your Clerk, Stripe, and Gemini AI API keys, and any other environment variables required for the platform.
+2. Add your Clerk, Stripe, Gemini AI, Neon database, and any other required environment variables.
 3. Update any relevant URLs or configuration in the project settings.
 
 ### Running the App
@@ -55,6 +58,9 @@ Visit `http://localhost:3000` in your browser.
 
 Pull requests are welcome! For major changes, please open an issue to discuss what you would like to change.
 
+## License
+
+[MIT](LICENSE)
 
 ---
 
